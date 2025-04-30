@@ -20,7 +20,7 @@ function LoveLanding() {
           <a href="#">Service</a>
           <a href="#">Gallery</a>
           <a href="#">Team</a>
-          <a href="/showData">Blog</a>
+          <Link to="/showData">Blog</Link>
           <a href="#">Contact</a>
         </nav>
 
