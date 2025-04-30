@@ -32,10 +32,10 @@ export default function MainPage() {
     loveScore = Math.min(Math.max(loveScore, 50), 100);
 
     setResult(`${yourName} ❤️ ${partnerName} = ${loveScore}% Love`);
-     const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;
     // Send the love score data to the backend API for storage in MongoDB
     try {
-      const response = await fetch('${apiUrl}/love/save-love', {
+      const response = await fetch(`${apiUrl}/love/save-love`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

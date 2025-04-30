@@ -8,11 +8,11 @@ function ShowAllData() {
   const [authenticated, setAuthenticated] = useState(false);
   const [error, setError] = useState("");
 
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   
   const fetchRecords = async () => {
     try {
-      const response = await axios.post("${apiUrl}/love/get-love-data", {
+      const response = await axios.post(`${apiUrl}/love/get-love-data`, {
         enteredPassword: password,
       });
 
