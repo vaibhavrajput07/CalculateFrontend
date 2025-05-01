@@ -1,39 +1,54 @@
 import { useState } from 'react';
-
 import './MainPage.css';
 
 export default function MainPage() {
   const [yourName, setYourName] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [result, setResult] = useState("");
-  
-  
-  // Function to calculate love and store it in MongoDB
+
+  const isValidName = (name) => {
+    const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+    return nameRegex.test(name.trim());
+  };
+
   const calculateLove = async () => {
-    if (yourName.trim() === "" || partnerName.trim() === "") {
+    const trimmedYourName = yourName.trim();
+    const trimmedPartnerName = partnerName.trim();
+
+    // 1. Empty field check
+    if (!trimmedYourName || !trimmedPartnerName) {
       setResult("Please enter both names ❤️");
       return;
     }
 
-    let loveScore = 50;  // Start with a minimum love score of 50%
-
-    // 1. Matching characters in both names
-    const yourNameSet = new Set(yourName.toLowerCase().split(''));
-    const partnerNameSet = new Set(partnerName.toLowerCase().split(''));
-    const matchingCharacters = [...yourNameSet].filter(char => partnerNameSet.has(char)).length;
-    loveScore += matchingCharacters * 5; // Add 5 for each matching character
-
-    // 2. Check if both names have equal length
-    if (yourName.length === partnerName.length) {
-      loveScore += 10; // Add 10 if names are of the same length
+    // 2. Alphabet-only validation
+    if (!isValidName(trimmedYourName) || !isValidName(trimmedPartnerName)) {
+      setResult("Names must contain only letters (no numbers or special characters) ❌");
+      return;
     }
 
-    // Ensure love score is within the range of 50 to 100
-    loveScore = Math.min(Math.max(loveScore, 50), 100);
+    // 3. Same name validation
+    if (trimmedYourName.toLowerCase() === trimmedPartnerName.toLowerCase()) {
+      setResult("Both names cannot be the same 🚫");
+      return;
+    }
 
-    setResult(`${yourName} ❤️ ${partnerName} = ${loveScore}% Love`);
+    // 4. Calculate love score
+    let loveScore = 50;
+    const yourNameSet = new Set(trimmedYourName.toLowerCase().split(''));
+    const partnerNameSet = new Set(trimmedPartnerName.toLowerCase().split(''));
+    const matchingCharacters = [...yourNameSet].filter(char => partnerNameSet.has(char)).length;
+    loveScore += matchingCharacters * 5;
+
+    if (trimmedYourName.length === trimmedPartnerName.length) {
+      loveScore += 10;
+    }
+
+    loveScore = Math.min(Math.max(loveScore, 50), 100);
+    setResult(`${trimmedYourName} ❤️ ${trimmedPartnerName} = ${loveScore}% Love`);
+
     const apiUrl = import.meta.env.VITE_API_URL;
-    // Send the love score data to the backend API for storage in MongoDB
+
     try {
       const response = await fetch(`${apiUrl}/love/save-love`, {
         method: 'POST',
@@ -41,8 +56,8 @@ export default function MainPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          yourName,
-          partnerName,
+          yourName: trimmedYourName,
+          partnerName: trimmedPartnerName,
           loveScore
         }),
       });
@@ -60,7 +75,7 @@ export default function MainPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-400 to-pink-400 p-4">
-      <h1 className="text-5xl font-bold text-white ">
+      <h1 className="text-5xl font-bold text-white">
         Love <span className="text-white">♥</span> Calculator
       </h1>
       <p className="text-white font-semibold mb-6 subTitle">

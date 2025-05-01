@@ -50,7 +50,11 @@ function ShowAllData() {
     <div className="table-container">
       {!authenticated ? (
         <form onSubmit={handleSubmit} className="auth-form">
-          <h2>Enter Password to View Records</h2>
+          <a href="https://calculatefrontend.onrender.com/calculate" style={{ color: 'blue', textDecoration: 'none' }}>
+            <i className="fa-solid fa-arrow-left arrow" style={{ marginRight: '8px' }}></i>
+            Back
+          </a>
+          <h2>Blogs Not Visible</h2>
           <input
             type="password"
             placeholder="Enter Password"
@@ -59,6 +63,7 @@ function ShowAllData() {
             className="password-input"
           />
           <button type="submit" className="submit-btn">Check</button>
+          
           {error && <p className="error-msg">{error}</p>}
         </form>
       ) : (
