@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+
 import './showAllData.css';
 
 function ShowAllData() {
@@ -50,10 +52,10 @@ function ShowAllData() {
     <div className="table-container">
       {!authenticated ? (
         <form onSubmit={handleSubmit} className="auth-form">
-          <a href="https://calculatefrontend.onrender.com/calculate" style={{ color: 'blue', textDecoration: 'none' }}>
+          <Link to="/calculate" style={{ color: 'blue', textDecoration: 'none' }}>
             <i className="fa-solid fa-arrow-left arrow" style={{ marginRight: '8px' }}></i>
             Back
-          </a>
+          </Link>
           <h2>Blogs Not Visible</h2>
           <input
             type="password"

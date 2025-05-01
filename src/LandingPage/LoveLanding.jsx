@@ -17,8 +17,8 @@ function LoveLanding() {
         <nav className={`nav ${menuOpen ? 'open' : ''}`}>
           <a href="/">Home</a>
           <a href="#">About</a>
-          <a href="https://calculatefrontend.onrender.com/calculate">Service</a>
-          <a href="https://calculatefrontend.onrender.com/calculate">Gallery</a>
+          <Link to="/calculate">Service</Link>
+          <Link to="/calculate">Gallery</Link>
           <a href="#">Team</a>
           <Link to="/showData">Blog</Link>
           <a href="#">Contact</a>
